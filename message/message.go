@@ -30,6 +30,18 @@ type Message struct {
 
 var Invalid = Message{Offset: OffsetInvalid}
 
+func MinOffset(offsets map[int64]struct{}) int64 {
+	min := OffsetInvalid
+	first := true
+	for offset := range offsets {
+		if first || offset < min {
+			min = offset
+			first = false
+		}
+	}
+	return min
+}
+
 func Gen(count int) []Message {
 	var msgs = make([]Message, count)
 	for i := range msgs {

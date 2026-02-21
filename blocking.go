@@ -52,14 +52,14 @@ func (l *blockingLog) Publish(messages []Message) (int64, error) {
 
 func (l *blockingLog) ConsumeBlocking(ctx context.Context, offset int64, maxCount int64) (int64, []Message, error) {
 	if err := l.notify.Wait(ctx, offset); err != nil {
-		return 0, nil, err
+		return OffsetInvalid, nil, err
 	}
 	return l.Consume(offset, maxCount)
 }
 
 func (l *blockingLog) ConsumeByKeyBlocking(ctx context.Context, key []byte, offset int64, maxCount int64) (int64, []Message, error) {
 	if err := l.notify.Wait(ctx, offset); err != nil {
-		return 0, nil, err
+		return OffsetInvalid, nil, err
 	}
 	return l.ConsumeByKey(key, offset, maxCount)
 }

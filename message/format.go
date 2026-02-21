@@ -45,7 +45,7 @@ func OpenWriter(path string) (*Writer, error) {
 	return &Writer{Path: path, f: f, pos: stat.Size()}, nil
 }
 
-func (w *Writer) Write(m Message) (int64, error) {
+func (w *Writer) Write(m Message) (int64, error) { // TODO update message format
 	var fullSize = 8 + // offset
 		8 + // unix micro
 		4 + // key size
@@ -220,11 +220,11 @@ func (r *Reader) read(position int64, msg *Message) (nextPosition int64, err err
 func (r *Reader) Close() error {
 	if r.ra != nil {
 		if err := r.ra.Close(); err != nil {
-			return fmt.Errorf("write mem log close: %w", err)
+			return fmt.Errorf("read mem log close: %w", err)
 		}
 	} else {
 		if err := r.r.Close(); err != nil {
-			return fmt.Errorf("write log close: %w", err)
+			return fmt.Errorf("read log close: %w", err)
 		}
 	}
 	return nil

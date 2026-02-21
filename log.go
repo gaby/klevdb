@@ -3,10 +3,8 @@ package klevdb
 import (
 	"errors"
 	"fmt"
-	"maps"
 	"os"
 	"path/filepath"
-	"slices"
 	"sync"
 	"time"
 
@@ -218,7 +216,7 @@ func (l *log) ConsumeByKey(key []byte, offset int64, maxCount int64) (int64, []m
 	l.readersMu.RLock()
 	defer l.readersMu.RUnlock()
 
-	rdr, index := segment.Consume(l.readers, offset)
+	rdr, segmentIndex := segment.Consume(l.readers, offset)
 	for {
 		nextOffset, msgs, err := rdr.ConsumeByKey(key, hash, offset, maxCount)
 		if err != nil {
@@ -227,12 +225,12 @@ func (l *log) ConsumeByKey(key []byte, offset int64, maxCount int64) (int64, []m
 		if len(msgs) > 0 {
 			return nextOffset, msgs, err
 		}
-		if index >= len(l.readers)-1 {
+		if segmentIndex >= len(l.readers)-1 {
 			return nextOffset, msgs, err
 		}
 
-		index += 1
-		rdr = l.readers[index]
+		segmentIndex += 1
+		rdr = l.readers[segmentIndex]
 		offset = message.OffsetOldest
 	}
 }
@@ -423,10 +421,7 @@ func (l *log) Delete(offsets map[int64]struct{}) (map[int64]struct{}, int64, err
 }
 
 func (l *log) findDeleteReader(offsets map[int64]struct{}) (*reader, error) {
-	orderedOffsets := slices.Collect(maps.Keys(offsets))
-	slices.Sort(orderedOffsets)
-	lowestOffset := orderedOffsets[0]
-
+	lowestOffset := message.MinOffset(offsets)
 	if lowestOffset < 0 {
 		return nil, errDeleteRelative
 	}
@@ -502,7 +497,7 @@ func (l *log) Sync() (int64, error) {
 	defer l.writerMu.Unlock()
 
 	if err := l.writer.Sync(); err != nil {
-		return OffsetInvalid, nil
+		return OffsetInvalid, err
 	}
 	return l.writer.GetNextOffset()
 }

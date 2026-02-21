@@ -32,13 +32,13 @@ type TLog[K any, V any] interface {
 	// GetByKey see [Log.GetByKey]
 	GetByKey(key K, empty bool) (message TMessage[K, V], err error)
 
-	// OffsetByKey see [Lot.OffsetByKey]
+	// OffsetByKey see [Log.OffsetByKey]
 	OffsetByKey(key K, empty bool) (int64, error)
 
 	// GetByTime see [Log.GetByTime]
 	GetByTime(start time.Time) (message TMessage[K, V], err error)
 
-	// OffsetByTime see [Lot.OffsetByTime]
+	// OffsetByTime see [Log.OffsetByTime]
 	OffsetByTime(start time.Time) (offset int64, messageTime time.Time, err error)
 
 	// Delete see [Log.Delete]

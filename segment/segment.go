@@ -4,10 +4,8 @@ import (
 	"errors"
 	"fmt"
 	"io"
-	"maps"
 	"os"
 	"path/filepath"
-	"slices"
 
 	"github.com/klev-dev/klevdb/index"
 	"github.com/klev-dev/klevdb/message"
@@ -327,9 +325,7 @@ type RewriteSegment struct {
 }
 
 func (r *RewriteSegment) GetNewSegment() Segment {
-	orderedOffsets := slices.Collect(maps.Keys(r.SurviveOffsets))
-	slices.Sort(orderedOffsets)
-	lowestOffset := orderedOffsets[0]
+	lowestOffset := message.MinOffset(r.SurviveOffsets)
 	return New(r.Segment.Dir, lowestOffset)
 }
 

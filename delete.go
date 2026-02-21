@@ -31,7 +31,7 @@ func DeleteMultiWithWait(d time.Duration) DeleteMultiBackoff {
 // and size, together with the error
 //
 // [DeleteMultiBackoff] is called on each iteration to give
-// others a chanse to work with the log, while being deleted
+// others a chance to work with the log, while being deleted
 func DeleteMulti(ctx context.Context, l Log, offsets map[int64]struct{}, backoff DeleteMultiBackoff) (map[int64]struct{}, int64, error) {
 	var deletedOffsets = map[int64]struct{}{}
 	var deletedSize int64

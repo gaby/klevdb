@@ -2,6 +2,7 @@ package klevdb
 
 import (
 	"bytes"
+	"fmt"
 	"sync"
 	"sync/atomic"
 	"time"
@@ -401,6 +402,9 @@ func (r *reader) Close() error {
 
 	if r.messages == nil {
 		return nil
+	}
+	if r.messagesInuse.Load() > 0 {
+		return fmt.Errorf("close failed: consume in progress")
 	}
 
 	if err := r.messages.Close(); err != nil {
