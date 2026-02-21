@@ -4,9 +4,9 @@
 [![Go Reference](https://pkg.go.dev/badge/github.com/klev-dev/klevdb.svg)](https://pkg.go.dev/github.com/klev-dev/klevdb)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-klevdb is a fast message store, written in Go. Think single partition on kafka, but stored locally.
+klevdb is a fast message store, written in Go. Think single partition on Kafka, but stored locally.
 
-In addition to basic consuming by offset, you can also configure klevdb to index times and keys. Times index allow you to quickly find a message by its time (or the first message after a certain time). Keys index allow you to quickly find the last message with a given key.
+In addition to basic consuming by offset, you can also configure klevdb to index times and keys. Time indexes allow you to quickly find a message by its time (or the first message after a certain time). Key indexes allow you to quickly find the last message with a given key.
 
 ## Usage
 
@@ -22,6 +22,8 @@ To use klevdb:
 package main
 
 import (
+    "fmt"
+
     "github.com/klev-dev/klevdb"
 )
 
@@ -93,7 +95,7 @@ ok  	github.com/klev-dev/klevdb	12.433s
 With default rollover of 1MB, for messages with keys 10B and values 128B:
  * ~300,000 writes/sec, no indexes
  * ~250,000 writes/sec, with all indexes enabled
- * scales lineary with the batch size
+ * scales linearly with the batch size
 
 ### Consume
 ```
