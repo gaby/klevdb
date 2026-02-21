@@ -7,7 +7,7 @@ import (
 )
 
 // FindByCount returns a set of offsets for messages that when
-// removed will keep number of the messages in the log less then max
+// removed will keep the number of messages in the log under max
 func FindByCount(ctx context.Context, l klevdb.Log, max int) (map[int64]struct{}, error) {
 	stats, err := l.Stat()
 	switch {

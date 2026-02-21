@@ -10,7 +10,7 @@ import (
 type BlockingLog interface {
 	Log
 
-	// ConsumeBlocking is similar to [Consume], but if offset is equal to the next offset it will block until next message is produced
+	// ConsumeBlocking is similar to [Consume], but if offset is equal to the next offset it will block until next message is published
 	ConsumeBlocking(ctx context.Context, offset int64, maxCount int64) (nextOffset int64, messages []Message, err error)
 
 	// ConsumeByKeyBlocking is similar to [ConsumeBlocking], but only returns messages matching the key

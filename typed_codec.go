@@ -12,7 +12,7 @@ type Codec[T any] interface {
 	Decode(b []byte) (t T, empty bool, err error)
 }
 
-// JsonCodec supports coding values as a JSON
+// JsonCodec supports coding values as JSON
 type JsonCodec[T any] struct{}
 
 func (c JsonCodec[T]) Encode(t T, empty bool) ([]byte, error) {
@@ -49,7 +49,7 @@ func (c stringOptCodec) Decode(b []byte) (string, bool, error) {
 	return s, false, err
 }
 
-// StringOptCodec supports coding an optional string, e.g. differantiates between "" and nil strings
+// StringOptCodec supports coding an optional string, e.g. differentiates between "" and nil strings
 var StringOptCodec = stringOptCodec{}
 
 type stringCodec struct{}

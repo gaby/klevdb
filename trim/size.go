@@ -53,7 +53,7 @@ func FindBySize(ctx context.Context, l klevdb.Log, sz int64) (map[int64]struct{}
 	return offsets, nil
 }
 
-// BySize tries to remove messages until log size is less then sz
+// BySize tries to remove messages until log size is less than sz
 //
 // returns the offsets it deleted and the amount of storage freed
 func BySize(ctx context.Context, l klevdb.Log, sz int64) (map[int64]struct{}, int64, error) {

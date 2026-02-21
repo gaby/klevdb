@@ -62,7 +62,7 @@ type TLog[K any, V any] interface {
 	// Close see [Log.Close]
 	Close() error
 
-	// Raw returns the wrapped in log
+	// Raw returns the underlying log
 	Raw() Log
 }
 

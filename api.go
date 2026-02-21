@@ -13,7 +13,7 @@ const (
 	// OffsetOldest represents the smallest offset still available
 	// Use it to consume all messages, starting at the first available
 	OffsetOldest = message.OffsetOldest
-	// OffsetNewest represents the offset that will be used for the next produce
+	// OffsetNewest represents the offset that will be used for the next publish
 	// Use it to consume only new messages
 	OffsetNewest = message.OffsetNewest
 	// OffsetInvalid is the offset returned when error is detected
@@ -22,7 +22,7 @@ const (
 
 type Message = message.Message
 
-// InvalidMessage returned when an error have occurred
+// InvalidMessage returned when an error has occurred
 var InvalidMessage = message.Invalid
 
 // ErrInvalidOffset error is returned when the offset attribute is invalid or out of bounds
@@ -50,7 +50,7 @@ type Options struct {
 	TimeIndex bool
 	// Force filesystem sync after each Publish
 	AutoSync bool
-	// At what segment size it will rollover to a new segment. Defaults to 1mb.
+	// At what segment size it will rollover to a new segment. Defaults to 1MB.
 	Rollover int64
 	// Check the head segment for integrity, before opening it for reading/writing.
 	Check bool
@@ -60,7 +60,7 @@ type Log interface {
 	// Publish appends messages to the log.
 	// It returns the offset of the next message to be appended.
 	// The offset of the message is ignored, set to the actual offset.
-	// If the time of the message is 0, it set to the current UTC time.
+	// If the time of the message is 0, it is set to the current UTC time.
 	Publish(messages []Message) (nextOffset int64, err error)
 
 	// NextOffset returns the offset of the next message to be published.
@@ -80,7 +80,7 @@ type Log interface {
 	//   from the next available offset.
 	// Consume is allowed to return no messages, but with increasing nextOffset
 	//   in case messages between offset and nextOffset have been deleted.
-	// NextOffset is always bigger then offset, unless we are caught up
+	// NextOffset is always bigger than offset, unless we are caught up
 	//   to the head of the log in which case they are equal.
 	Consume(offset int64, maxCount int64) (nextOffset int64, messages []Message, err error)
 
@@ -93,7 +93,7 @@ type Log interface {
 	// If offset is before the first available on the log, or is after
 	//   NextOffset, it returns ErrInvalidOffset
 	// If log is empty, it returns ErrInvalidOffset
-	// If the exact offset have been deleted, it returns ErrNotFound
+	// If the exact offset has been deleted, it returns ErrNotFound
 	Get(offset int64) (message Message, err error)
 
 	// GetByKey retrieves the last message in the log for this key

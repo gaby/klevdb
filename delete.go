@@ -6,7 +6,7 @@ import (
 	"time"
 )
 
-// DeleteMultiBackoff is call on each iteration of [DeleteMulti] to give applications
+// DeleteMultiBackoff is called on each iteration of [DeleteMulti] to give applications
 // opportunity to not overload the target log with deletes
 type DeleteMultiBackoff func(context.Context) error
 
@@ -33,11 +33,12 @@ func DeleteMultiWithWait(d time.Duration) DeleteMultiBackoff {
 // [DeleteMultiBackoff] is called on each iteration to give
 // others a chance to work with the log, while being deleted
 func DeleteMulti(ctx context.Context, l Log, offsets map[int64]struct{}, backoff DeleteMultiBackoff) (map[int64]struct{}, int64, error) {
+	var remainingOffsets = maps.Clone(offsets)
 	var deletedOffsets = map[int64]struct{}{}
 	var deletedSize int64
 
-	for len(offsets) > 0 {
-		deleted, size, err := l.Delete(offsets)
+	for len(remainingOffsets) > 0 {
+		deleted, size, err := l.Delete(remainingOffsets)
 		switch {
 		case err != nil:
 			return deletedOffsets, deletedSize, err
@@ -47,7 +48,7 @@ func DeleteMulti(ctx context.Context, l Log, offsets map[int64]struct{}, backoff
 
 		maps.Copy(deletedOffsets, deleted)
 		deletedSize += size
-		maps.DeleteFunc(offsets, func(k int64, v struct{}) bool {
+		maps.DeleteFunc(remainingOffsets, func(k int64, v struct{}) bool {
 			_, ok := deleted[k]
 			return ok
 		})

@@ -41,7 +41,7 @@ SEARCH:
 				continue
 			}
 
-			// not seen it (first instance) whithout value (e.g. delete)
+			// not seen it (first instance) without value (e.g. delete)
 			if msg.Value == nil {
 				offsets[msg.Offset] = struct{}{}
 			}
@@ -66,7 +66,7 @@ SEARCH:
 // It will not remove messages for keys it sees before that offset.
 //
 // This is similar to removing keys, which were deleted (e.g. value set to nil)
-// and are therfore no longer relevant/active.
+// and are therefore no longer relevant/active.
 //
 // returns the offsets it deleted and the amount of storage freed
 func Deletes(ctx context.Context, l klevdb.Log, before time.Time) (map[int64]struct{}, int64, error) {

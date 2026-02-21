@@ -7,7 +7,7 @@ import (
 	"github.com/klev-dev/klevdb/message"
 )
 
-// FindByOffset returns a set of offsets for messages that
+// FindByOffset returns a set of offsets for messages whose
 // offset is before a given offset
 func FindByOffset(ctx context.Context, l klevdb.Log, before int64) (map[int64]struct{}, error) {
 	if before == message.OffsetOldest {
